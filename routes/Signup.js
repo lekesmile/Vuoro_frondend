@@ -41,21 +41,23 @@ router.post('/signup',  (req, res) => {
 
 router.post('/login', (req, res)=>{
     
-     user.findOne({email: req.body.email}, function (err, userfound){
-        //  if(err){
-        //      res.status(404).send(req.body.email + ' No user found in the database')
-        //  }else{
-            // console.log(userfound)
-            bcrypt.compare(req.body.password, userfound.password).then(function (err, res) {
-                // res == true
-                if(res){
-                    console.log(res + loginTryUser + ' User found ')
+     user.findOne({email: req.body.email}, function (err, foundUser){
+         if(err){
+             res.status(404).send(req.body.email + ' No user found in the database')
+         }else{
+           if(foundUser){
+            bcrypt.compare(req.body.password, foundUser.password, function (err, result) {
+                // result === true
+                if(result === true){
+                    console.log(result  + ' User found ')
+                    res.status(200).send(foundUser)
                 }else{
-                    return res.status(400).send('Wrong')
+                    return res.status(400).send('Wrong password')
         }
-       
+      
     });
-    //      }
+        }
+     }
     })
 })
 
