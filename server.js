@@ -1,12 +1,18 @@
 require('./dbConn')
 const express = require('express')
 const bodyParser = require('body-parser')
-const signup = require('./routes/Signup')
+const auth = require('./routes/Auth')
+var cors = require('cors');
+
+
 
 
 
 
 const app = express()
+
+// Cross-origin
+app.use(cors())
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -15,7 +21,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-app.use(signup)
+
+app.use(auth)
 
 
 
@@ -26,6 +33,6 @@ app.use(signup)
 
 
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 
 app.listen(port, () => console.log(`Port app listening on port ${port}`))

@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 mongoose.set('useCreateIndex', true);
 mongoose.connect(String(process.env.DATABASE_PORT), { useUnifiedTopology: true, useNewUrlParser: true })
     .then(() => {
-        console.log('db connect Ok')
+        console.log('Mongodb connect is up and running .....')
     })
     .catch((err) => {
         console.log(err)
