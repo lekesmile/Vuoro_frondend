@@ -2,6 +2,7 @@ require('./dbConn')
 const express = require('express')
 const bodyParser = require('body-parser')
 const auth = require('./routes/Auth')
+const workers = require('./routes/Workers')
 var cors = require('cors');
 
 
@@ -25,7 +26,7 @@ app.use(bodyParser.json())
 app.use(auth)
 
 
-
+app.use(workers)
 
 
 

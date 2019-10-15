@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const user = require('../Schema/UserSchema')
+const user = require('../models/UserSchema')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -22,9 +22,7 @@ router.post('/signup', (req, res) => {
             newUser.save()
                 .then(() => {
                     console.log(newUser)
-                    res.send(newUser)
-
-                //  res.redirect('http://localhost:3000')
+                    res.sendStatus(201)
                 }).catch((err) => {
                     res.status(404).send(err.message)
                     console.log(err.message)
@@ -50,8 +48,7 @@ router.post('/login', (req, res) => {
                     // result === true
                     if (result === true) {
                         console.log(foundUser + ' User found ')
-                        res.status(200)
-                        // .redirect('http://localhost:3000/product')
+                        res.status(200).send(foundUser)
                     } else {
                         return res.status(400).send('Wrong password')
                     }
