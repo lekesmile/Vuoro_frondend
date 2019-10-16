@@ -4,7 +4,8 @@ const User = require('../models/UserSchema')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
-const secret = 'jwtSecret'
+require('dotenv').config();
+
 // const authChecker = require('../middleware/authChecker')
 
 
@@ -24,7 +25,7 @@ router.post('/signup', (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    jwt.sign({ id: User.id }, secret, { expiresIn: 3600 }, (err, token) => {
+                    jwt.sign({ id: User.id }, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
                         if (err) throw err;
                         res.status(201).send({ Message: 'User registered', newUser, 'token ': token })
                     })
@@ -50,7 +51,7 @@ router.post('/login', (req, res) => {
                 bcrypt.compare(req.body.password, foundUser.password, function (err, result) {
                     // result === true
                     if (result === true) {
-                        jwt.sign({ id: User.id }, secret, { expiresIn: 3600 }, (err, token) => {
+                        jwt.sign({ id: User.id }, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
                             if (err) throw err;
                             res.status(201).send({ Message: 'User found', foundUser, 'token ': token })
                         })
