@@ -46,7 +46,8 @@ router.put('/api/workers/:id', async (req, res, next) => {
 
     try {
         const worker = await Workers.findOneAndUpdate({ _id: req.params.id }, req.body);
-        res.status(200).send(`Update successfully ${worker}`);
+        const updatedWorker = await Workers.findOne({ _id: req.params.id })
+        res.status(200).send(`Update successfully ${updatedWorker}`);
         next();
     }
     catch (error) {
