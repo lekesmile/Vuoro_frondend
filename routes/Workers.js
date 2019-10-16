@@ -1,10 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const Workers = require('../models/WorkerSchema')
+const authChecker = require('../middleware/authChecker')
 
 
 // Get all workers from database
-router.get('/api/workers', async (req, res, next) => {
+router.get('/api/workers', authChecker, async (req, res, next) => {
 
     try {
         const worker = await Workers.find({})

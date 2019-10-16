@@ -3,6 +3,8 @@ const router = express.Router()
 const User = require('../models/UserSchema')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken')
+const secret = 'jwtSecret'
 
 
 
@@ -21,13 +23,12 @@ router.post('/signup', (req, res) => {
             })
             newUser.save()
                 .then(() => {
-                    console.log(newUser)
-                    res.status(201).send('User registered')
-
+                    jwt.sign({ id: User.id }, secret, { expiresIn: 3600 }, (err, token) => {
+                        if (err) throw err;
+                        res.status(201).send({ Message: 'User registered', newUser, 'token ': token })
+                    })
                 }).catch((err) => {
                     res.status(404).send(err.message)
-                    console.log(err.message)
-
                 })
 
         })
@@ -48,8 +49,11 @@ router.post('/login', (req, res) => {
                 bcrypt.compare(req.body.password, foundUser.password, function (err, result) {
                     // result === true
                     if (result === true) {
-                        console.log(foundUser + ' User found ')
-                        res.status(200).send(foundUser)
+                        jwt.sign({ id: User.id }, secret, { expiresIn: 3600 }, (err, token) => {
+                            if (err) throw err;
+                            res.status(201).send({ Message: 'User found', foundUser, 'token ': token })
+                        })
+
                     } else {
                         return res.status(400).send('Wrong password')
                     }
