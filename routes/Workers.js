@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const workers = require('../models/WorkerSchema')
+const Workers = require('../models/WorkerSchema')
 
 
 // Get all workers from database
 router.get('/api/workers', async (req, res, next) => {
 
     try {
-        const worker = await workers.find({})
+        const worker = await Workers.find({})
         res.send(worker)
         next()
     } catch (error) {
@@ -18,7 +18,7 @@ router.get('/api/workers', async (req, res, next) => {
 // Post a new worker into the database
 
 router.post('/api/workers', async (req, res, next) => {
-    const worker = new workers({
+    const worker = new Workers({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         email: req.body.email,
@@ -37,19 +37,19 @@ router.post('/api/workers', async (req, res, next) => {
 // Update a worker in the database
 
 router.put('/api/workers/:id', async (req, res, next) => {
- // Check for JSON
-      if (!req.is('application/json')) {
+    // Check for JSON
+    if (!req.is('application/json')) {
         return next(
-          new errors.InvalidContentError("Expects 'application/json'")
+            new errors.InvalidContentError("Expects 'application/json'")
         );
-      }
+    }
 
-      try {
-        const worker = await workers.findOneAndUpdate({ _id: req.params.id },req.body);
+    try {
+        const worker = await Workers.findOneAndUpdate({ _id: req.params.id }, req.body);
         res.status(200).send(`Update successfully ${worker}`);
         next();
-      }
-     catch (error) {
+    }
+    catch (error) {
         return next(
             new errors.ResourceNotFoundError(
                 `There is no customer with the id of ${req.params.id}`
@@ -64,11 +64,11 @@ router.put('/api/workers/:id', async (req, res, next) => {
 router.delete('/api/workers/:id', async (req, res, next) => {
 
     try {
-       const worker = await workers.findOneAndRemove({ _id: req.params.id });
+        const worker = await Workers.findOneAndRemove({ _id: req.params.id });
         console.log({ _id: req.params.id })
         res.status(204).send(`User deleted successfully ${worker}`);
         next();
-       } catch (err) {
+    } catch (err) {
         return next(
             new errors.ResourceNotFoundError(
                 `There is no customer with the id of ${req.params.id}`
@@ -78,5 +78,5 @@ router.delete('/api/workers/:id', async (req, res, next) => {
 
 })
 
-module.exports= router;
+module.exports = router;
 
