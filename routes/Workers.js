@@ -3,7 +3,7 @@ const router = express.Router()
 const workers = require('../models/WorkerSchema')
 
 
-
+// Get all workers from database
 router.get('/api/workers', async (req, res, next) => {
 
     try {
@@ -14,6 +14,8 @@ router.get('/api/workers', async (req, res, next) => {
         return next(new errors.InvalidContentError(error));
     }
 })
+
+// Post a new worker into the database
 
 router.post('/api/workers', async (req, res, next) => {
     const worker = new workers({
@@ -32,6 +34,8 @@ router.post('/api/workers', async (req, res, next) => {
     }
 })
 
+// Update a worker in the database
+
 router.put('/api/workers/:id', async (req, res, next) => {
  // Check for JSON
       if (!req.is('application/json')) {
@@ -42,7 +46,7 @@ router.put('/api/workers/:id', async (req, res, next) => {
 
       try {
         const worker = await workers.findOneAndUpdate({ _id: req.params.id },req.body);
-        res.status(200).send('Update successfully');
+        res.status(200).send(`Update successfully ${worker}`);
         next();
       }
      catch (error) {
@@ -54,12 +58,15 @@ router.put('/api/workers/:id', async (req, res, next) => {
     }
 })
 
+
+// Delete a worker from the database
+
 router.delete('/api/workers/:id', async (req, res, next) => {
 
     try {
-        await workers.findOneAndRemove({ _id: req.params.id });
+       const worker = await workers.findOneAndRemove({ _id: req.params.id });
         console.log({ _id: req.params.id })
-        res.status(204).send('User deleted successfully');
+        res.status(204).send(`User deleted successfully ${worker}`);
         next();
        } catch (err) {
         return next(

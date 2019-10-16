@@ -6,7 +6,7 @@ const saltRounds = 10;
 
 
 
-router.post('/signup', (req, res) => {
+router.post('/signup',  (req, res, ) => {
 
     try {
         bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
@@ -19,10 +19,11 @@ router.post('/signup', (req, res) => {
                 password: hash
 
             })
-            newUser.save()
+           newUser.save()
                 .then(() => {
                     console.log(newUser)
-                    res.sendStatus(201)
+                    res.status(201).send('User registered')
+                  
                 }).catch((err) => {
                     res.status(404).send(err.message)
                     console.log(err.message)
