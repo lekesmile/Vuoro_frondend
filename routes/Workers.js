@@ -27,7 +27,7 @@ router.post('/api/workers', async (req, res, next) => {
     })
     try {
         await worker.save();
-        res.status(201)
+        res.status(201).send(worker)
         next()
     } catch (error) {
         return next(new errors.InternalError(error.message))

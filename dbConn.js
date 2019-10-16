@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 
 
 mongoose.set('useCreateIndex', true);
-mongoose.connect(String(process.env.DATABASE_PORT), { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify : false})
+mongoose.set('useFindAndModify', false);
+mongoose.connect(String(process.env.DATABASE_PORT), { useUnifiedTopology: true, useNewUrlParser: true})
     .then(() => {
         console.log('Mongodb connect is up and running .....')
     })
