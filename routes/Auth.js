@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken')
 const secret = 'jwtSecret'
+// const authChecker = require('../middleware/authChecker')
 
 
 

@@ -18,7 +18,7 @@ router.get('/api/workers', authChecker, async (req, res, next) => {
 
 // Post a new worker into the database
 
-router.post('/api/workers', async (req, res, next) => {
+router.post('/api/workers', authChecker, async (req, res, next) => {
     const worker = new Workers({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -37,7 +37,7 @@ router.post('/api/workers', async (req, res, next) => {
 
 // Update a worker in the database
 
-router.put('/api/workers/:id', async (req, res, next) => {
+router.put('/api/workers/:id', authChecker, async (req, res, next) => {
     // Check for JSON
     if (!req.is('application/json')) {
         return next(
@@ -63,7 +63,7 @@ router.put('/api/workers/:id', async (req, res, next) => {
 
 // Delete a worker from the database
 
-router.delete('/api/workers/:id', async (req, res, next) => {
+router.delete('/api/workers/:id', authChecker, async (req, res, next) => {
 
     try {
         const worker = await Workers.findOneAndRemove({ _id: req.params.id });
