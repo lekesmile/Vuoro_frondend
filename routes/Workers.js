@@ -5,7 +5,7 @@ const authChecker = require('../middleware/authChecker')
 require('dotenv').config();
 
 // Get all workers from database
-router.get('/api/workers', authChecker, async (req, res, next) => {
+router.get('/api/workers', async (req, res, next) => {
 
     try {
         const worker = await Workers.find({})
@@ -15,6 +15,21 @@ router.get('/api/workers', authChecker, async (req, res, next) => {
         return next(new errors.InvalidContentError(error));
     }
 })
+
+// Get Single Worker
+
+router.get('/api/workers/:id', async (req, res, next) => {
+    try {
+        const worker = await Workers.findById(req.params.id);
+        console.log(worker)
+        res.status(201).send(worker);
+        next();
+    } catch (error) {
+        return   `There is no worker with the id of ${req.params.id} ${error} `
+               
+
+    }
+});
 
 // Post a new worker into the database
 
