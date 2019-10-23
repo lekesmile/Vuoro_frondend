@@ -25,8 +25,8 @@ router.get('/api/workers/:id', async (req, res, next) => {
         res.status(201).send(worker);
         next();
     } catch (error) {
-        return   `There is no worker with the id of ${req.params.id} ${error} `
-               
+        return `There is no worker with the id of ${req.params.id} ${error} `
+
 
     }
 });
@@ -52,7 +52,7 @@ router.post('/api/workers', authChecker, async (req, res, next) => {
 
 // Update a worker in the database
 
-router.put('/api/workers/:id', authChecker, async (req, res, next) => {
+router.put('/api/workers/:id', async (req, res, next) => {
     // Check for JSON
     if (!req.is('application/json')) {
         return next(
@@ -78,7 +78,7 @@ router.put('/api/workers/:id', authChecker, async (req, res, next) => {
 
 // Delete a worker from the database
 
-router.delete('/api/workers/:id', authChecker, async (req, res, next) => {
+router.delete('/api/workers/:id', async (req, res, next) => {
 
     try {
         const worker = await Workers.findOneAndRemove({ _id: req.params.id });
