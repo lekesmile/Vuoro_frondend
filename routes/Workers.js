@@ -2,6 +2,9 @@ const express = require('express')
 const router = express.Router()
 const Workers = require('../models/WorkerSchema')
 const authChecker = require('../middleware/authChecker')
+const admin = require('../middleware/admin')
+
+
 require('dotenv').config();
 
 // Get all workers from database
@@ -46,7 +49,8 @@ router.post('/api/workers', authChecker, async (req, res, next) => {
         res.status(201).send(worker)
         next()
     } catch (error) {
-        return next(new errors.InternalError(error.message))
+        console.log('Permission denied')
+        return res.sendStatus(403).send({ 'message': error, 'Permission denied': 'You have to loginin to access this page' })
     }
 })
 
@@ -78,7 +82,7 @@ router.put('/api/workers/:id', async (req, res, next) => {
 
 // Delete a worker from the database
 
-router.delete('/api/workers/:id', async (req, res, next) => {
+router.delete('/api/workers/:id', authChecker, async (req, res, next) => {
 
     try {
         const worker = await Workers.findOneAndRemove({ _id: req.params.id });

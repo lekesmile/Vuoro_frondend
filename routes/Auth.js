@@ -27,10 +27,11 @@ router.post('/signup', (req, res) => {
                 .then(() => {
                     jwt.sign({ id: User.id }, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
                         if (err) throw err;
-                        res.status(201).send({ Message: 'User registered', newUser, 'token ': token })
+                        return res.status(201).send({ "Message": 'User registered', newUser, 'token': token })
                     })
+
                 }).catch((err) => {
-                    res.status(404).send(err.message)
+                    return res.status(404).send(err.message)
                 })
 
         })
@@ -45,7 +46,7 @@ router.post('/login', (req, res) => {
 
     User.findOne({ email: req.body.email }, function (err, foundUser) {
         if (err) {
-            res.status(404).send(req.body.email + ' No user found in the database')
+            return res.status(404).send(req.body.email + ' No user found in the database')
         } else {
             if (foundUser) {
                 bcrypt.compare(req.body.password, foundUser.password, function (err, result) {
@@ -53,9 +54,9 @@ router.post('/login', (req, res) => {
                     if (result === true) {
                         jwt.sign({ id: User.id }, process.env.JWT_SECRET, { expiresIn: 3600 }, (err, token) => {
                             if (err) throw err;
-                            res.status(201).send({ Message: 'User found', foundUser, 'token ': token })
+                            return res.status(201).json({ "Message": 'successfull logged in', foundUser, 'token': token })
                         })
-
+                        console.log(foundUser)
                     } else {
                         return res.status(400).send('Wrong password')
                     }

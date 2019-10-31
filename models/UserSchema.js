@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
-    firstname:{
+    firstname: {
         type: String,
-         required: true, 
-         min :3
+        required: true,
+        min: 3
     },
 
     lastname: {
@@ -16,20 +16,33 @@ const UserSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: true
+        required: true,
+        lowercase: true,
+        match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address']
     },
 
     password: {
         type: String,
         required: true
     },
-    
+
     SignUpDate: {
         type: Date,
         default: Date.now
+    },
+
+
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
-})
+
+});
+
+// UserSchema.methods.generateAuthToken = function (){
+
+// }
 
 const user = mongoose.model('user', UserSchema)
 
- module.exports = user
+module.exports = user
