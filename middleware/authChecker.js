@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 function authChecker(req, res, next) {
-    const token = req.header('x-auth-token');
+    const token = req.header('Authorization');
 
     // Check for token
     if (!token)
@@ -15,7 +15,7 @@ function authChecker(req, res, next) {
         req.user = decoded;
         next();
     } catch (e) {
-        res.status(400).json({ msg: 'Token is not valid' });
+       return res.status(400).json({ msg: 'Token is not valid' });
     }
 }
 
